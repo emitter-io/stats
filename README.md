@@ -1,12 +1,34 @@
 # Emitter Stats
-This golang package is used for monitoring emitter.io cluster. This provides a tight binary compression and a single histogram/counter abstraction in order to deal with various kinds of system monitoring. This package is compatible with GopherJS (snapshot-only) and hence can also be compiled to javascript.
+This golang package is used for monitoring [emitter.io](emitter.io) cluster. This provides a tight binary compression and a single histogram/counter abstraction in order to deal with various kinds of system monitoring. This package is compatible with GopherJS (snapshot-only) and hence can also be compiled to javascript.
 
 [![Join the chat at https://gitter.im/emitter-io/public](https://badges.gitter.im/emitter-io/public.svg)](https://gitter.im/emitter-io/public?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 
-[![Build status](https://ci.appveyor.com/api/projects/status/6im4291ao9i664ix?svg=true)](https://ci.appveyor.com/project/Kelindar/emitter)
-[![Coverage Status](https://coveralls.io/repos/github/emitter-io/emitter/badge.svg?branch=master)](https://coveralls.io/github/emitter-io/emitter?branch=master)
+[![Build status](https://ci.appveyor.com/api/projects/status/3y2d9ssq760g8bfd?svg=true)](https://ci.appveyor.com/project/Kelindar/stats)
+[![Coverage Status](https://coveralls.io/repos/github/emitter-io/stats/badge.svg?branch=master)](https://coveralls.io/github/emitter-io/emitter?branch=master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/emitter-io/stats)](https://goreportcard.com/report/github.com/emitter-io/stats)
-[![Twitter Follow](https://img.shields.io/twitter/follow/emitter_io.svg?style=social&label=Follow)](https://twitter.com/emitter_io)
 
 
 ## Quick Start
 
+The package itself provides a general-purpose monitoring capabilities, with tight encoding using our [binary codec](https://github.com/kelindar/binary). While it's primarily have been built for emitter, it can be used anywhere.
+
+Typical usage consists of creating a metric container, measuring various metrics and sending snapshots through the wire.
+
+```
+// Create a container
+m := stats.New()
+
+// Measure few metrics
+m.Measure("my.metric.1", rand.Int31n(1000))
+m.Measure("my.metric.2", rand.Int31n(1000))
+
+// Create a snapshot which can be transferred through the wire
+bytes := m.Snapshot()
+
+// Restore a snapshot from binary
+v, err := Restore(bytes)
+
+// Get the values back
+percentiles := v.Quantile(50, 90, 95, 99)
+average := v.Mean()
+count := v.Count()
+```
