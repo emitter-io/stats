@@ -1,0 +1,1 @@
+gopherjs build -m -o stats.js
