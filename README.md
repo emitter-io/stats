@@ -6,6 +6,11 @@ This golang package is used for monitoring [emitter.io](emitter.io) cluster. Thi
 [![Coverage Status](https://coveralls.io/repos/github/emitter-io/stats/badge.svg?branch=master)](https://coveralls.io/github/emitter-io/emitter?branch=master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/emitter-io/stats)](https://goreportcard.com/report/github.com/emitter-io/stats)
 
+## Installation
+
+```
+go get -u github.com/emitter-io/stats
+```
 
 ## Quick Start
 
@@ -25,7 +30,7 @@ m.Measure("my.metric.2", rand.Int31n(1000))
 bytes := m.Snapshot()
 
 // Restore a snapshot from binary
-v, err := Restore(bytes)
+v, err := stats.Restore(bytes)
 
 // Get the values back
 percentiles := v.Quantile(50, 90, 95, 99)
