@@ -15,6 +15,12 @@
 			"revisionTime": "2018-05-18T05:39:59Z"
 		},
 		{
+			"checksumSHA1": "+uvL6lrIFyv9OZ9OxIGBYR469eU=",
+			"path": "github.com/gopherjs/gopherjs/js",
+			"revision": "8dffc02ea1cb8398bb73f30424697c60fcf8d4c5",
+			"revisionTime": "2018-04-24T20:25:46Z"
+		},
+		{
 			"checksumSHA1": "EsrdAFlAmgEBpqmn0YQm/keIx+4=",
 			"path": "github.com/kelindar/binary",
 			"revision": "41f505e37ddbaec600f33293759dd4e2dc7cc6b3",
