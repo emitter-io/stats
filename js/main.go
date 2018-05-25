@@ -13,14 +13,16 @@ func main() {
 }
 
 // Restore restores the snapshot
-func Restore(snapshot []byte) (out []*js.Object) {
+func Restore(snapshot []byte) map[string]*js.Object {
 	snapshots, err := stats.Restore(snapshot)
 	if err != nil {
 		panic(err)
 	}
 
+	// Create a snapshot map for easier consumption
+	out := make(map[string]*js.Object)
 	for _, s := range snapshots {
-		out = append(out, js.MakeWrapper(&s))
+		out[s.Name()] = js.MakeWrapper(&s)
 	}
-	return
+	return out
 }
