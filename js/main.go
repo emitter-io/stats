@@ -9,14 +9,18 @@ func main() {
 	js.Global.Set("stats", map[string]interface{}{
 		"restore": Restore,
 	})
+
 }
 
 // Restore restores the snapshot
-func Restore(snapshot []byte) []stats.Snapshot {
-	out, err := stats.Restore(snapshot)
+func Restore(snapshot []byte) (out []*js.Object) {
+	snapshots, err := stats.Restore(snapshot)
 	if err != nil {
 		panic(err)
 	}
 
-	return out
+	for _, s := range snapshots {
+		out = append(out, js.MakeWrapper(&s))
+	}
+	return
 }
