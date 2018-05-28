@@ -47,3 +47,14 @@ func TestMetricSnaphsot(t *testing.T) {
 	assert.NotEqual(t, 0, t0)
 	assert.NotEqual(t, 0, t1)
 }
+
+func TestSnapshots(t *testing.T) {
+	snapshots := Snapshots{
+		{Metric: "a"},
+		{Metric: "b"},
+	}
+
+	m := snapshots.ToMap()
+	assert.Equal(t, "a", m["a"].Metric)
+	assert.Equal(t, "b", m["b"].Metric)
+}

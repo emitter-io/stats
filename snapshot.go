@@ -25,7 +25,7 @@ type Snapshotter interface {
 }
 
 // Restore restores a snapshot into a read-only histogram format.
-func Restore(encoded []byte) (snapshots []Snapshot, err error) {
+func Restore(encoded []byte) (snapshots Snapshots, err error) {
 	var decoded []byte
 	if decoded, err = snappy.Decode(decoded, encoded); err == nil {
 		err = binary.Unmarshal(decoded, &snapshots)
@@ -97,4 +97,16 @@ func (s *Snapshot) Variance() float64 {
 // Rate returns a operation per second rate over the time window.
 func (s *Snapshot) Rate() float64 {
 	return float64(s.Amount) / float64(s.T1-s.T0)
+}
+
+// Snapshots represents a set of snapshots.
+type Snapshots []Snapshot
+
+// ToMap converts the set of snapshots to a map.
+func (snapshots Snapshots) ToMap() map[string]Snapshot {
+	out := make(map[string]Snapshot)
+	for _, s := range snapshots {
+		out[s.Name()] = s
+	}
+	return out
 }
