@@ -102,6 +102,7 @@ func (s *Snapshot) Rate() float64 {
 // Merge merges two snapshots together.
 func (s *Snapshot) Merge(other Snapshot) {
 	s.Sample = append(s.Sample, other.Sample...)
+	s.Amount = s.Amount + other.Amount
 	if other.T0 < s.T0 {
 		s.T0 = other.T0
 	}
