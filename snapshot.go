@@ -99,6 +99,17 @@ func (s *Snapshot) Rate() float64 {
 	return float64(s.Amount) / float64(s.T1-s.T0)
 }
 
+// Merge merges two snapshots together.
+func (s *Snapshot) Merge(other Snapshot) {
+	s.Sample = append(s.Sample, other.Sample...)
+	if other.T0 < s.T0 {
+		s.T0 = other.T0
+	}
+	if other.T1 > s.T1 {
+		s.T1 = other.T1
+	}
+}
+
 // Snapshots represents a set of snapshots.
 type Snapshots []Snapshot
 
@@ -109,4 +120,24 @@ func (snapshots Snapshots) ToMap() map[string]Snapshot {
 		out[s.Name()] = s
 	}
 	return out
+}
+
+// Merge merges two sets of snapshots together.
+func (snapshots *Snapshots) Merge(others Snapshots) {
+	m0 := snapshots.ToMap()
+	m1 := others.ToMap()
+
+	// Merge existing snapshots
+	for _, s := range *snapshots {
+		if other, ok := m1[s.Name()]; ok {
+			s.Merge(other)
+		}
+	}
+
+	// Append missing snapshots
+	for _, s := range others {
+		if _, ok := m0[s.Name()]; !ok {
+			*snapshots = append(*snapshots, s)
+		}
+	}
 }

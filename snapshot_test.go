@@ -58,3 +58,22 @@ func TestSnapshots(t *testing.T) {
 	assert.Equal(t, "a", m["a"].Metric)
 	assert.Equal(t, "b", m["b"].Metric)
 }
+
+func TestMergeSnapshots(t *testing.T) {
+	s1 := Snapshots{
+		{Metric: "a"},
+		{Metric: "b", T0: 10, T1: 20},
+	}
+
+	s2 := Snapshots{
+		{Metric: "c"},
+		{Metric: "b", T0: 5, T1: 40},
+	}
+
+	s1.Merge(s2)
+
+	m := s1.ToMap()
+	assert.Equal(t, "a", m["a"].Metric)
+	assert.Equal(t, "b", m["b"].Metric)
+	assert.Equal(t, "c", m["c"].Metric)
+}
