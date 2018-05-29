@@ -64,6 +64,7 @@ func TestMetric(t *testing.T) {
 	assert.Equal(t, "x", h.Name())
 	assert.Equal(t, float64(49.5), h.Quantile(50)[0])
 	assert.Equal(t, 833.25, h.Variance())
+	assert.NotZero(t, h.Rate())
 
 	t0, t1 := h.Window()
 	assert.NotEqual(t, time.Unix(0, 0), t0)
