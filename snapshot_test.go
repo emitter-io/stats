@@ -38,6 +38,7 @@ func TestMetricSnaphsot(t *testing.T) {
 	assert.Equal(t, float64(49.5), h.Quantile(50)[0])
 	assert.Equal(t, 833.25, h.Variance())
 	assert.Equal(t, "test", h.Tag())
+	assert.Equal(t, 4950, h.Sum())
 
 	h.T0 = 0
 	h.T1 = 10
