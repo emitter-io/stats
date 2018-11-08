@@ -17,6 +17,7 @@
 package stats
 
 import (
+	"sync"
 	"testing"
 	"time"
 
@@ -46,6 +47,29 @@ func BenchmarkMetricUpdate(b *testing.B) {
 	}
 }
 
+func TestMetricConcurrency(t *testing.T) {
+	h := NewMetric("x")
+
+	var wg sync.WaitGroup
+	wg.Add(2)
+
+	go func() {
+		for i := int32(0); i < 50000; i++ {
+			h.Update(i)
+		}
+		wg.Done()
+	}()
+
+	go func() {
+		for i := int32(0); i < 50000; i++ {
+			h.Reset()
+		}
+		wg.Done()
+	}()
+
+	wg.Wait()
+}
+
 func TestMetric(t *testing.T) {
 	h := NewMetric("x")
 	for i := int32(0); i < 100; i++ {
@@ -73,4 +97,14 @@ func TestMetric(t *testing.T) {
 	h.Reset()
 	assert.Equal(t, 0, h.Count())
 	assert.Equal(t, 0, h.Max())
+}
+
+func TestSampleClamp(t *testing.T) {
+	h := NewMetric("x")
+	for i := int32(0); i < 2000; i++ {
+		h.Update(i)
+	}
+
+	sample := h.sample()
+	assert.Equal(t, reservoirSize, len(sample))
 }
