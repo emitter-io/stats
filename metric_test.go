@@ -94,9 +94,12 @@ func TestMetric(t *testing.T) {
 	assert.NotEqual(t, time.Unix(0, 0), t0)
 	assert.NotEqual(t, time.Unix(0, 0), t1)
 
+	assert.Len(t, h.Histogram(0, 50, 100), 2)
+
 	h.Reset()
 	assert.Equal(t, 0, h.Count())
 	assert.Equal(t, 0, h.Max())
+
 }
 
 func TestSampleClamp(t *testing.T) {

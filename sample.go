@@ -123,3 +123,50 @@ func (s sample) Quantile(quantiles ...float64) []float64 {
 	}
 	return scores
 }
+
+// Histogram creates a histogram with the bins provided.
+func (s sample) Histogram(bins []int) []Bin {
+
+	// Get the current and next bin
+	hist, index := binsFor(bins), 0
+
+	// Range through the sorted values
+	sort.Sort(s)
+	for _, v := range s {
+		if v > hist[index].Upper {
+			index++
+		}
+
+		// Count
+		hist[index].Count++
+	}
+
+	return hist
+}
+
+// binsFor computes the bins for a given set of points
+func binsFor(points []int) []Bin {
+	sort.Ints(points)
+	if len(points) < 2 {
+		return []Bin{{
+			Lower: math.MinInt32, Upper: math.MaxInt32,
+		}}
+	}
+
+	arr := make([]Bin, 0, len(points)-1)
+	for i := 0; i < len(points)-1; i++ {
+		arr = append(arr, Bin{
+			Lower: int32(points[i]),
+			Upper: int32(points[i+1]),
+		})
+	}
+	return arr
+}
+
+// Bin represents a bin of a histogram
+type Bin struct {
+	Lower int32 // The lower bound of the bin
+	//Center int32 // The center of the bin
+	Upper int32 // The upper bound of the bin
+	Count int   // The number of elements in the bin
+}

@@ -48,3 +48,17 @@ func TestQuantiles(t *testing.T) {
 
 	assert.Equal(t, float64(49.5), s.Quantile(50)[0])
 }
+
+func TestSample_Histogram(t *testing.T) {
+	s := sample{1, 2, 5, 54, 34, 9, 3, 2, 1, 1}
+	p := []int{0, 10, 100}
+
+	assert.Len(t, s.Histogram(p), 2)
+	assert.Equal(t, 8, s.Histogram(p)[0].Count)
+	assert.Equal(t, 2, s.Histogram(p)[1].Count)
+}
+
+func TestSample_HistogramEmpty(t *testing.T) {
+	s := sample{1, 2, 5, 54, 34, 9, 3, 2, 1, 1}
+	assert.Equal(t, 10, s.Histogram([]int{})[0].Count)
+}

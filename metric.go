@@ -193,3 +193,10 @@ func (m *Metric) UpdateTag(tag string) {
 	m.tag = tag
 	m.Unlock()
 }
+
+// Histogram creates a histogram with the bins provided.
+func (m *Metric) Histogram(bins ...int) []Bin {
+	m.Lock()
+	defer m.Unlock()
+	return m.sample().Histogram(bins)
+}
