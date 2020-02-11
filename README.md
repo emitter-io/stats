@@ -3,7 +3,7 @@ This golang package is used for monitoring [emitter.io](emitter.io) cluster. Thi
 
 [![Join the chat at https://gitter.im/emitter-io/public](https://badges.gitter.im/emitter-io/public.svg)](https://gitter.im/emitter-io/public?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) 
 [![Build status](https://ci.appveyor.com/api/projects/status/3y2d9ssq760g8bfd?svg=true)](https://ci.appveyor.com/project/Kelindar/stats)
-[![Coverage Status](https://coveralls.io/repos/github/emitter-io/stats/badge.svg?branch=master)](https://coveralls.io/github/emitter-io/emitter?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/emitter-io/stats/badge.svg?branch=master)](https://coveralls.io/github/emitter-io/stats?branch=master)
 [![Go Report Card](https://goreportcard.com/badge/github.com/emitter-io/stats)](https://goreportcard.com/report/github.com/emitter-io/stats)
 
 ## Installation

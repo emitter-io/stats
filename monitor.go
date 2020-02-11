@@ -71,8 +71,7 @@ func (m *Monitor) Tag(name, tag string) {
 // Snapshot encodes the metrics into a binary representation
 func (m *Monitor) Snapshot() (out []byte) {
 	var snapshots []Snapshot
-	m.registry.Range(func(k, v interface{}) bool {
-		metric := v.(*Metric)
+	m.Range(func(metric *Metric) bool {
 		snapshots = append(snapshots, *metric.Snapshot())
 		metric.Reset()
 		return true
@@ -83,6 +82,14 @@ func (m *Monitor) Snapshot() (out []byte) {
 		out = snappy.Encode(out, enc)
 	}
 	return
+}
+
+// Range ranges over all the metrics in the monitor. The iteration stops if the function
+// returns false, similar to sync.Map
+func (m *Monitor) Range(f func(*Metric) bool) {
+	m.registry.Range(func(k, v interface{}) bool {
+		return f(v.(*Metric))
+	})
 }
 
 // MeasureRuntime captures the runtime metrics, this is a relatively slow process
